@@ -61,17 +61,6 @@ function MapInfoBox() {
 
     }, [bbox]);
     const handleOnClickResearchButton = () => {
-        const wfsSource = new VectorSource({
-            format: new GeoJSON(),
-            url: function (extent) {
-                return ('http://localhost:80/geoserver/wfs?service=WFS&version=1.1.0' +
-                    '&request=GetFeature&typename=ne:countries&outputFormat=application/json' +
-                    `&srsName=EPSG:3857&bbox=${bbox.join(',')},EPSG:3857`);
-            },
-            strategy: bboxStrategy
-        });
-        wfsLayers.setSource(null);
-        wfsLayers.setSource(wfsSource);
         map.removeLayer(wfsLayers);
         map.addLayer(wfsLayers);
     }
