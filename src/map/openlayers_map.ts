@@ -9,6 +9,7 @@ import {Modify, Select} from "ol/interaction";
 import VectorSource from "ol/source/Vector";
 import {GeoJSON} from "ol/format";
 import {bbox as bboxStrategy} from "ol/loadingstrategy";
+import {Vector} from "ol/layer";
 
 export const wmsSource = new ImageWMS({
     url: 'http://localhost/geoserver/wms',
@@ -33,10 +34,11 @@ export const view = new View({
     center: [0, 0],
     zoom: 3,
     projection: 'EPSG:3857'
+    // projection: 'EPSG:4326'
 })
 
 
-const wfsSource = new VectorSource({
+export const wfsSource = new VectorSource({
     format: new GeoJSON(),
     url: function (extent) {
         return ('http://localhost:80/geoserver/wfs?service=WFS&version=1.1.0' +
@@ -58,6 +60,12 @@ export const wfsLayers = new VectorLayer({
     }),
     source: wfsSource,
 });
+export const pointSource = new VectorSource({
+
+})
+export const pointVectorLayers = new Vector({
+    source :pointSource
+})
 export const selectMode = new Select({
     layers: [wfsLayers],
 })

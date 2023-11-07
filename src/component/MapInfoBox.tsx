@@ -1,22 +1,9 @@
 import {useContext, useEffect, useRef, useState} from "react";
 import MapContext from "../map/MapContext";
 import {view, wfsLayers, wmsSource} from "../map/openlayers_map";
-import {GeoJSON} from "ol/format";
-import VectorSource from "ol/source/Vector";
-import {Fill, Stroke, Style} from "ol/style";
 import styled from "styled-components";
 import LayerSelect from "./LayerSelect";
-import {bbox as bboxStrategy} from "ol/loadingstrategy";
-
-const selectStyle = new Style({
-    fill: new Fill({
-        color: '#eeeeee',
-    }),
-    stroke: new Stroke({
-        color: 'rgba(255, 255, 255, 0.7)',
-        width: 2,
-    }),
-});
+import {createNodeLink} from "../action/NodeLink";
 
 function MapInfoBox() {
     const {instance: map, isLoading} = useContext(MapContext);
@@ -37,7 +24,6 @@ function MapInfoBox() {
         })
 
         map.once('singleclick', e => {
-
             if (infoString) setInfoString("");
             const viewResolution = /** @type {number} */ (view.getResolution());
             if (typeof viewResolution === "number") {
@@ -58,6 +44,7 @@ function MapInfoBox() {
             }
 
         })
+        map.on('singleclick', (e) => createNodeLink(e, map))
 
     }, [bbox]);
     const handleOnClickResearchButton = () => {
