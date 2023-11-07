@@ -1,7 +1,8 @@
 import {useEffect, useState} from "react";
 import MapContext from "./MapContext";
-import {OSMlayers, view} from "./openlayers_map";
+import {modifyMode, OSMlayers, selectMode, view} from "./openlayers_map";
 import {Map as OlMap} from 'ol';
+import {defaults} from "ol/interaction";
 
 interface MapObj {
     isLoading: boolean,
@@ -28,6 +29,7 @@ const MyMap = ({children}: MyMapProps) => {
                 layers: OSMlayers,
                 target: 'map', // 하위 요소 중 id 가 map 인 element가 있어야함.
                 view: view,
+                interactions: defaults().extend([selectMode,modifyMode])
             });
 
             setMapObj(prevState => {

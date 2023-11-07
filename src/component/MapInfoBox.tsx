@@ -35,21 +35,6 @@ function MapInfoBox() {
             const extend: number[] = map.getView().calculateExtent();
             setBbox(extend);
         })
-        map.on('pointermove', function (e) {
-            setCurrentPoint(e.coordinate);
-            if (select.current) {
-                select.current.setStyle(undefined);
-                // setSelected(null);
-                select.current = null;
-            }
-            map.forEachFeatureAtPixel(e.pixel, function (f: any) {
-                // setSelected(f);
-                select.current = f
-                selectStyle.getFill().setColor(f.get('COLOR') || '#EEEEEE');
-                f.setStyle(selectStyle);
-                return true;
-            })
-        })
 
         map.once('singleclick', e => {
 

@@ -5,6 +5,7 @@ import ImageLayer from "ol/layer/Image.js";
 import {ImageWMS} from "ol/source.js";
 import VectorLayer from "ol/layer/Vector";
 import {Fill, Stroke, Style} from "ol/style";
+import {Modify, Select} from "ol/interaction";
 
 export const wmsSource = new ImageWMS({
     url: 'http://localhost/geoserver/wms',
@@ -42,4 +43,10 @@ export const wfsLayers = new VectorLayer({
             color: 'rgba(100,100,100,0.25)',
         })
     }),
+});
+export const selectMode = new Select({
+    layers: [wfsLayers],
+})
+export const modifyMode = new Modify({
+    features: selectMode.getFeatures(),
 });
