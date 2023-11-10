@@ -5,11 +5,11 @@ import ImageLayer from "ol/layer/Image.js";
 import {ImageWMS} from "ol/source.js";
 import VectorLayer from "ol/layer/Vector";
 import {Fill, Stroke, Style} from "ol/style";
-import {Modify, Select} from "ol/interaction";
 import VectorSource from "ol/source/Vector";
 import {GeoJSON} from "ol/format";
 import {bbox as bboxStrategy} from "ol/loadingstrategy";
 import {Vector} from "ol/layer";
+import {Cluster} from "ol/source";
 
 export const wmsSource = new ImageWMS({
     url: 'http://localhost/geoserver/wms',
@@ -42,33 +42,16 @@ export const wfsSource = new VectorSource({
     format: new GeoJSON(),
     url: function (extent) {
         return ('http://localhost:80/geoserver/wfs?service=WFS&version=1.1.0' +
-            '&request=GetFeature&typename=ne:countries&outputFormat=application/json' +
+            '&request=GetFeature&typename=cite:gisexample&outputFormat=application/json' +
             `&srsName=EPSG:3857&bbox=${extent.join(',')},EPSG:3857`);
     },
     strategy: bboxStrategy
 });
 
 export const wfsLayers = new VectorLayer({
-    style: new Style({
-        stroke: new Stroke({
-            color: 'rgba(0, 0, 255, 1.0)',
-            width: 2,
-        }),
-        fill: new Fill({
-            color: 'rgba(100,100,100,0.25)',
-        })
-    }),
-    source: wfsSource,
+    source: new Cluster({source:wfsSource}),
 });
-export const pointSource = new VectorSource({
-
-})
+export const pointSource = new VectorSource({})
 export const pointVectorLayers = new Vector({
-    source :pointSource
+    source: pointSource
 })
-export const selectMode = new Select({
-    layers: [wfsLayers],
-})
-export const modifyMode = new Modify({
-    features: selectMode.getFeatures(),
-});
